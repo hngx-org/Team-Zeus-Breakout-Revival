@@ -6,10 +6,25 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: const Center(
-        child: Text('Home Screen'),
-      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('assets/images/background.png'),
+            fit: BoxFit.cover
+          )
+        ),
+        child: Center(
+          child: TextButton(
+            onPressed: (){},
+            child: const Text('Start Game',
+            style: TextStyle(
+                fontFamily: 'PressStart2P',
+              fontSize: 30,
+              color: Colors.white
+            ),),
+          ),
+        )
+      )
     );
   }
 }
