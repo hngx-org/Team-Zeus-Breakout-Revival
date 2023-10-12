@@ -4,11 +4,13 @@ publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: ">=2.19.4 <3.0.0"
+  # sdk: ">=3.0.0 <4.0.0"
+  sdk: ">=2.18.2 <3.0.0"
 
 dependencies:
-  flame: ^1.9.1
+  flame: ^1.4.0
   flame_audio: ^2.1.1
+  google_fonts: ^6.0.0
   flutter:
     sdk: flutter
 
@@ -22,6 +24,8 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/audio/
+
   fonts:
     - family: PressStart2P
       fonts:
