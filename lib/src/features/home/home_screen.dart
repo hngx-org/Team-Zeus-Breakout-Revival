@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zeus_breakout_rivival/element/gameplayUI/gameplayUI_and_logic.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -15,7 +16,9 @@ class HomeScreen extends StatelessWidget {
         ),
         child: Center(
           child: TextButton(
-            onPressed: (){},
+            onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) =>  const Breakout()));
+            },
             child: const Text('Start Game',
             style: TextStyle(
                 fontFamily: 'PressStart2P',
