@@ -77,7 +77,7 @@ class _SplashScreenState extends State<SplashScreen>
               Transform.scale(
                 scale: _animation.value,
                 child: const Text(
-                  "BRICK",
+                  "BREAKOUT",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontFamily: "PressStart2P",
@@ -87,11 +87,11 @@ class _SplashScreenState extends State<SplashScreen>
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Transform.scale(
                 scale: _animation.value,
                 child: const Text(
-                  "BREAKER",
+                  "REVIVAL",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontFamily: "PressStart2P",
