@@ -15,6 +15,7 @@ class Breakout extends StatefulWidget {
 class _BreakoutState extends State<Breakout> with SingleTickerProviderStateMixin{
 
   late AnimationController controller;
+  bool isPlaying = true;
 
   late Size worldSize;
   late Paddle paddle;
@@ -107,7 +108,7 @@ class _BreakoutState extends State<Breakout> with SingleTickerProviderStateMixin
       Rect powerupRect = powerup.rect;
       if (paddleRect.overlaps(powerupRect)) {
         consumedPowerups.add(powerup);
-        score += 500;
+        score += 50;
         switch (powerup.type) {
           case PowerUpType.length:
             paddle.desiredLength += 1.0;
@@ -224,14 +225,45 @@ class _BreakoutState extends State<Breakout> with SingleTickerProviderStateMixin
           padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
           child: Column(
             children: [
-              Text('HIGH SCORE',
-                  style: TextStyle(color: Colors.red)),
-              Text('$score',
-                  style: TextStyle(color: Colors.red)),
+            Container(
+            width: size.width,
+            color: Colors.black,
+            height: size.height * 0.1,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('HIGH SCORE',
+                        style: TextStyle(color: Colors.red)),
+                    Text('$score',
+                        style: TextStyle(color: Colors.red)),
+                  ],
+                ),
+                IconButton(
+                  onPressed: (){
+                    if(isPlaying) controller.reset(); else controller.repeat();
+                    setState(() {
+                      isPlaying = !isPlaying;
+                    });
+                  },
+                  iconSize: 50.0,
+                  icon:Icon(Icons.pause_circle),
+                  color: Colors.white,
+                )
+              ],
+            ),
+          ),
               Container(
+                decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('assets/images/game_background.png'),
+                        fit: BoxFit.cover
+                    )
+                ),
                 width: size.width ,
-                height: size.height * 0.8,
-                color: Colors.blueGrey,
+                height: size.height * 0.75,
                 child: AspectRatio(
 
                   aspectRatio: worldSize.aspectRatio,
@@ -301,6 +333,6 @@ class Btn extends StatelessWidget {
               color: Colors.red,
               borderRadius: BorderRadius.all(Radius.circular(16))),
           child: Center(child: child),
-        ));;
+        ));
   }
 }
