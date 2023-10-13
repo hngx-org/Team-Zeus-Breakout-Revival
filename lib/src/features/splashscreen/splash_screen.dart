@@ -11,19 +11,36 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
   @override
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
 
-    Future.delayed(
-      const Duration(seconds: 5),
-      () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
-        ));
-      },
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 4),
     );
+
+    _animation = Tween(begin: 0.0, end: 1.0).animate(_controller);
+
+    _controller.forward();
+
+    _animation.addListener(() {
+      setState(() {});
+    });
+
+    _animation.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const HomeScreen(),
+          ),
+        );
+      }
+    });
   }
 
   @override
@@ -32,6 +49,8 @@ class _SplashScreenState extends State<SplashScreen>
       SystemUiMode.manual,
       overlays: SystemUiOverlay.values,
     );
+
+    _controller.dispose();
     super.dispose();
   }
 
@@ -42,39 +61,48 @@ class _SplashScreenState extends State<SplashScreen>
         width: double.infinity,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: const AssetImage("assets/images/splash_bg.jpg"),
+            image: const AssetImage(
+                "assets/images/ben-neale-zpxKdH_xNSI-unsplash.jpg"),
             fit: BoxFit.cover,
             colorFilter: ColorFilter.mode(
-              Colors.black.withOpacity(0.5), // Adjust the opacity as needed
-              BlendMode.darken, // You can also use other BlendModes
+              Colors.black.withOpacity(0.5),
+              BlendMode.darken,
             ),
           ),
         ),
-        child: const Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "BRICK",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontFamily: "PressStart2P",
-                fontStyle: FontStyle.italic,
-                color: Color.fromARGB(255, 100, 177, 254),
-                fontSize: 32,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Transform.scale(
+                scale: _animation.value,
+                child: const Text(
+                  "BREAKOUT",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "PressStart2P",
+                    fontStyle: FontStyle.italic,
+                    color: Color.fromARGB(255, 0, 109, 218),
+                    fontSize: 42,
+                  ),
+                ),
               ),
-            ),
-            SizedBox(height: 20),
-            Text(
-              "BREAKER",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontFamily: "PressStart2P",
-                fontStyle: FontStyle.italic,
-                color: Colors.white,
-                fontSize: 32,
+              const SizedBox(height: 20),
+              Transform.scale(
+                scale: _animation.value,
+                child: const Text(
+                  "REVIVAL",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "PressStart2P",
+                    fontStyle: FontStyle.italic,
+                    color: Color.fromARGB(255, 255, 0, 0),
+                    fontSize: 42,
+                  ),
+                ),
               ),
-            )
-          ],
+            ],
+          ),
         ),
       ),
     );
