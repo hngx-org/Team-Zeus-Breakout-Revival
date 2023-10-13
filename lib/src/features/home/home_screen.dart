@@ -1,6 +1,7 @@
 import 'package:flame/game.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
+import 'package:zeus_breakout_rivival/element/gameplayUI/gameplayUI_and_logic.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
