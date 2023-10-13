@@ -1,11 +1,18 @@
-import 'package:flame/game.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:zeus_breakout_rivival/game/block_breaker.dart';
+import 'package:zeus_breakout_rivival/src/features/splashscreen/splash_screen.dart';
 import 'package:zeus_breakout_rivival/utils/color_scheme.dart';
 
 void main() {
   runApp(const MainApp());
+  FlameAudio.bgm.initialize();
+
+  FlameAudio.audioCache
+      .loadAll(["AdhesiveWombat - Night Shade  NO COPYRIGHT 8-bit Music.mp3"]);
+
+  FlameAudio.bgm
+      .play('AdhesiveWombat - Night Shade  NO COPYRIGHT 8-bit Music.mp3');
 }
 
 class MainApp extends StatelessWidget {
@@ -13,7 +20,6 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final game = BlockBreaker();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Breakout Rivival",
@@ -27,11 +33,12 @@ class MainApp extends StatelessWidget {
         textTheme: GoogleFonts.audiowideTextTheme(ThemeData.dark().textTheme),
         useMaterial3: true,
       ),
-      home: SafeArea(
-        child: GameWidget(
-          game: game,
-        ),
-      ),
+      home: const SplashScreen(),
+      // home: SafeArea(
+      //   child: GameWidget(
+      //     game: game,
+      //   ),
+      // ),
     );
   }
 }
