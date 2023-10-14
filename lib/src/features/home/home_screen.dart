@@ -1,10 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:zeus_breakout_rivival/src/features/home/widgets/home_appbard.dart';
 import 'package:zeus_breakout_rivival/src/features/home/widgets/widgets.dart';
 import 'package:zeus_breakout_rivival/utils/extension.dart';
+import 'package:zeus_breakout_rivival/utils/flame_utils.dart';
 
 class HomeScreen extends HookWidget {
   const HomeScreen({super.key});
@@ -26,105 +27,179 @@ class HomeScreen extends HookWidget {
                   ),
                 ),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 5,
-                            vertical: 5,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Colors.white.withAlpha(50),
-                          ),
-                          child: !isSettingOn.value
-                              ? 'settings'.imageWithTap(
-                                  onTap: () =>
-                                      isSettingOn.value = !isSettingOn.value,
-                                )
-                              : Column(
-                                  children: [
-                                    'settings'.imageWithTap(
-                                      onTap: () => isSettingOn.value =
-                                          !isSettingOn.value,
-                                    ),
-                                    5.hi,
-                                    'mic_on'.imageWithTap(
-                                      onTap: () {
-                                        FlameAudio.bgm.play('brick-play.mp3');
-                                      },
-                                      isMainSound: true,
-                                    ),
-                                    5.hi,
-                                    'mic_off'.imageWithTap(onTap: () {
-                                      FlameAudio.bgm.stop();
-                                    }),
-                                    5.hi,
-                                    'info'.imageWithTap(onTap: () {}),
-                                  ],
+                    HomeAppbar(isSettingOn: isSettingOn),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.7,
+                      height: 203,
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            left: 0,
+                            top: 14,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.7,
+                              height: 189,
+                              decoration: ShapeDecoration(
+                                color: const Color(0xFFD1D8FF),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(21),
                                 ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          decoration: ShapeDecoration(
-                            color: const Color(0xFF9F51FE),
-                            shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                width: 2,
-                                color: Colors.white,
+                                shadows: const [
+                                  BoxShadow(
+                                    color: Color(0x3F000000),
+                                    blurRadius: 0,
+                                    offset: Offset(0, 4),
+                                    spreadRadius: 0,
+                                  )
+                                ],
                               ),
-                              borderRadius: BorderRadius.circular(33),
                             ),
-                            shadows: const [
-                              BoxShadow(
-                                color: Color(0x26000000),
-                                blurRadius: 0,
-                                offset: Offset(0, 4),
-                                spreadRadius: 0,
+                          ),
+                          Positioned(
+                            left: 0,
+                            top: 0,
+                            child: Container(
+                              width: MediaQuery.of(context).size.width * 0.7,
+                              height: 199,
+                              decoration: ShapeDecoration(
+                                color: const Color(0xFFFFFEFF),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(21),
+                                ),
+                              ),
+                              child: Stack(
+                                clipBehavior: Clip.none,
+                                alignment: Alignment.topCenter,
+                                children: [
+                                  Positioned(
+                                    top: -5,
+                                    left: -5,
+                                    child: 'left'.svgPicture,
+                                  ),
+                                  Positioned(
+                                    top: -5,
+                                    right: -5,
+                                    child: 'right'.svgPicture,
+                                  ),
+                                  Positioned(
+                                    top: -90,
+                                    left: -5,
+                                    child: 'conf'.svgPicture,
+                                  ),
+                                  Positioned(
+                                    top: -20,
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.55,
+                                      height: 51,
+                                      decoration: ShapeDecoration(
+                                        gradient: const LinearGradient(
+                                          begin: Alignment(0.00, -1.00),
+                                          end: Alignment(0, 1),
+                                          colors: [
+                                            Color(0xFFFFA4EB),
+                                            Color(0xFFEC36C9)
+                                          ],
+                                        ),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: RichText(
+                                          textAlign: TextAlign.center,
+                                          text: const TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: 'Level 01\n',
+                                                style: TextStyle(
+                                                  color: Color(0xFFB20D78),
+                                                  fontSize: 14,
+                                                  fontFamily: 'Digitalt',
+                                                ),
+                                              ),
+                                              TextSpan(
+                                                text: 'Continue',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 24,
+                                                  fontFamily: 'Digitalt',
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              60.hi,
+                              (MediaQuery.of(context).size.width * 0.7).wi,
+                              'score'.textSmall(
+                                color: const Color(0xFF5FCFFF),
+                              ),
+                              Container(
+                                width: 150,
+                                decoration: ShapeDecoration(
+                                  color: const Color(0xFFC1FDFF),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(31),
+                                  ),
+                                ),
+                                child: Center(
+                                  child: '999'.textLarge(
+                                    color: const Color(0xFF228AED),
+                                  ),
+                                ),
+                              ),
+                              10.hi,
+                              'reward'.textSmall(
+                                color: const Color(0xFF5FCFFF),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  'coins'
+                                      .svgPicture
+                                      .animate(
+                                        onPlay: (controller) =>
+                                            controller.repeat(),
+                                      )
+                                      .shimmer(delay: 500.ms, duration: 2000.ms)
+                                      .shake(
+                                          hz: 4, curve: Curves.easeInOutCubic)
+                                      .scale(
+                                          begin: const Offset(1.0, 1.0),
+                                          end: const Offset(1 / 1.05, 1),
+                                          duration: 1200.ms)
+                                      .then(delay: 800.ms)
+                                      .scale(
+                                        begin: const Offset(0.7, 0.7),
+                                        end: const Offset(1 / 1.05, 1),
+                                      ),
+                                  10.wi,
+                                  '25'.textLarge(
+                                    color: const Color(0xFF228AED),
+                                  )
+                                ],
                               )
                             ],
                           ),
-                          child: const Text(
-                            'Level 01',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 25,
-                            ),
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            const Text(
-                              '2499',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                              ),
-                            ),
-                            5.wi,
-                            'coin'
-                                .svgPicture
-                                .animate(
-                                  onPlay: (controller) => controller.repeat(),
-                                )
-                                .shimmer(delay: 5000.ms, duration: 2000.ms)
-                                .shake(hz: 4, curve: Curves.easeInOutCubic)
-                                .scale(
-                                    begin: const Offset(1.0, 1.0),
-                                    end: const Offset(1 / 1.05, 1),
-                                    duration: 1200.ms)
-                                .then(delay: 800.ms)
-                                .scale(
-                                  begin: const Offset(0.7, 0.7),
-                                  end: const Offset(1 / 1.05, 1),
-                                ),
-                          ],
+                        ],
+                      ),
+                    ),
+                    'play'.imageWithTap(onTap: () {}).padOnly(
+                          bottom: 50,
                         )
-                      ],
-                    )
                   ],
                 ).padSymmetric(
                   horizontal: 20,
@@ -132,7 +207,7 @@ class HomeScreen extends HookWidget {
                 ),
               ),
             ),
-            const SizedBox(
+            SizedBox(
               height: 100,
               width: double.infinity,
               child: Row(
@@ -140,12 +215,33 @@ class HomeScreen extends HookWidget {
                 children: [
                   BottomNavigationIcon(
                     text: 'trophy||trophies||Trophy',
+                    onTap: () {
+                      FlameUtils.playBgmWithDelay(
+                        'click.mp3',
+                        volume: 0.2,
+                        delayMilliseconds: 300,
+                      );
+                    },
                   ),
                   BottomNavigationIcon(
                     text: 'hscore||lb||L-Board',
+                    onTap: () {
+                      FlameUtils.playBgmWithDelay(
+                        'click.mp3',
+                        volume: 0.2,
+                        delayMilliseconds: 300,
+                      );
+                    },
                   ),
                   BottomNavigationIcon(
                     text: 'bonu||bonus||Bonus',
+                    onTap: () {
+                      FlameUtils.playBgmWithDelay(
+                        'click.mp3',
+                        volume: 0.2,
+                        delayMilliseconds: 300,
+                      );
+                    },
                   ),
                 ],
               ),
@@ -156,6 +252,7 @@ class HomeScreen extends HookWidget {
     );
   }
 }
+
 
 // decoration: const BoxDecoration(
 //   gradient: LinearGradient(

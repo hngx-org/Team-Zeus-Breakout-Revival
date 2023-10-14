@@ -125,26 +125,35 @@ extension FilePaths on String {
   String get gif => 'assets/images/$this.gif';
   String get json => 'assets/lottie/$this.json';
 
-  Text get textSmall => Text(
+  Text textSmall({
+    Color color = Colors.white,
+  }) =>
+      Text(
         this,
-        style: const TextStyle(
-          color: Colors.white,
+        style: TextStyle(
+          color: color,
           fontSize: 18,
         ),
       );
 
-  Text get textMedium => Text(
+  Text textMedium({
+    Color color = Colors.white,
+  }) =>
+      Text(
         this,
-        style: const TextStyle(
-          color: Colors.white,
+        style: TextStyle(
+          color: color,
           fontSize: 24,
         ),
       );
 
-  Text get textLarge => Text(
+  Text textLarge({
+    Color color = Colors.white,
+  }) =>
+      Text(
         this,
-        style: const TextStyle(
-          color: Colors.white,
+        style: TextStyle(
+          color: color,
           fontSize: 30,
         ),
       );
