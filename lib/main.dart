@@ -8,11 +8,18 @@ void main() {
   runApp(const MainApp());
   FlameAudio.bgm.initialize();
 
-  FlameAudio.audioCache
-      .loadAll(["AdhesiveWombat - Night Shade  NO COPYRIGHT 8-bit Music.mp3"]);
+  FlameAudio.audioCache.loadAll([
+    "brick-play.mp3",
+    "click.mp3",
+  ]);
 
-  FlameAudio.bgm
-      .play('AdhesiveWombat - Night Shade  NO COPYRIGHT 8-bit Music.mp3');
+  if (FlameAudio.bgm.isPlaying) {
+    FlameAudio.bgm.stop().then(
+          (value) => FlameAudio.bgm.play('brick-play.mp3'),
+        );
+  } else {
+    FlameAudio.bgm.play('brick-play.mp3');
+  }
 }
 
 class MainApp extends StatelessWidget {
@@ -23,7 +30,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Breakout Rivival",
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.light,
       theme: ThemeData(
         colorScheme: lightColorScheme,
         useMaterial3: true,

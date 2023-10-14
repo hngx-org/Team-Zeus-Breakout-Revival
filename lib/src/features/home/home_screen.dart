@@ -1,7 +1,4 @@
-import 'package:flame/game.dart';
-import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
-import 'package:zeus_breakout_rivival/element/gameplayUI/gameplayUI_and_logic.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,6 +19,25 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        body: Column(
+      children: [
+        Expanded(
+          child: Container(
+            color: Colors.black,
+          ),
+        ),
+        const SizedBox(
+          height: 100,
+          width: double.infinity,
+        )
+      ],
+    ));
+  }
+}
+
+
+/* 
+Scaffold(
       body: Stack(
         children: [
           Container(
@@ -53,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     FlameAudio.bgm.stop();
                   } else {
                     FlameAudio.bgm.play(
-                        'AdhesiveWombat - Night Shade  NO COPYRIGHT 8-bit Music.mp3');
+                        'brick-play.mp3');
                   }
                 },
                 color: Colors.white,
@@ -97,6 +113,4 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-    );
-  }
-}
+ */
