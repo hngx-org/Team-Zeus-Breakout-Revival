@@ -1,4 +1,6 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:zeus_breakout_rivival/src/features/home/widgets/widgets.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,18 +25,51 @@ class _HomeScreenState extends State<HomeScreen> {
       children: [
         Expanded(
           child: Container(
-            color: Colors.black,
+            // decoration: const BoxDecoration(
+            //   gradient: LinearGradient(
+            //     begin: Alignment(0.00, -1.00),
+            //     end: Alignment(0, 1),
+            //     colors: [Color(0xFF9C59FE), Color(0xFF6F53FD)],
+            //   ),
+            // ),
+            decoration: const BoxDecoration(
+              gradient: RadialGradient(
+                center: Alignment(0, 1),
+                radius: 0,
+                colors: [Color(0xFFA659FE), Color(0xFF6F53FD)],
+              ),
+            ),
+            child: const Column(
+              children: [
+                Row(
+                  children: [],
+                )
+              ],
+            ),
           ),
         ),
         const SizedBox(
           height: 100,
           width: double.infinity,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              BottomNavigationIcon(
+                text: 'trophy||trophies||Trophy',
+              ),
+              BottomNavigationIcon(
+                text: 'hscore||lb||L-Board',
+              ),
+              BottomNavigationIcon(
+                text: 'bonu||bonus||Bonus',
+              ),
+            ],
+          ),
         )
       ],
     ));
   }
 }
-
 
 /* 
 Scaffold(
