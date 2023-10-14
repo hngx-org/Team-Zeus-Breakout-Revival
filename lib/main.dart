@@ -1,5 +1,6 @@
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zeus_breakout_rivival/src/features/splashscreen/splash_screen.dart';
@@ -8,6 +9,7 @@ import 'package:zeus_breakout_rivival/utils/locator.dart';
 
 Future<void> main() async {
   await setUpLocator();
+  Animate.restartOnHotReload = true;
   runApp(
     const ProviderScope(child: MainApp()),
   );
