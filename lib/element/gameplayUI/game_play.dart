@@ -5,6 +5,7 @@ import 'package:zeus_breakout_rivival/element/ball/ball.dart';
 import 'package:zeus_breakout_rivival/element/brick/brick.dart';
 import 'package:zeus_breakout_rivival/element/paddle/paddle.dart';
 import 'package:zeus_breakout_rivival/element/powerUps/power_ups.dart';
+import 'package:zeus_breakout_rivival/utils/extension.dart';
 
 class Breakout extends StatefulWidget {
   const Breakout({Key? key}) : super(key: key);
@@ -213,79 +214,89 @@ class _BreakoutState extends State<Breakout>
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color(0xFF9C59FE),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+        child: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/svg/game-bg.jpeg'),
+              fit: BoxFit.cover,
+            ),
+          ),
           child: Column(
             children: [
               Container(
                 width: size.width,
-                color: Colors.black,
+                padding: const EdgeInsets.all(16),
                 height: size.height * 0.1,
+                color: Colors.white.withAlpha(100),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    'back_btn'.imageWithTap(onTap: () {
+                      Navigator.pop(context);
+                    }),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text('HIGH SCORE',
-                            style: TextStyle(color: Colors.red)),
-                        Text('$score',
-                            style: const TextStyle(color: Colors.red)),
+                        'score: $score'.textLarge(),
                       ],
                     ),
-                    IconButton(
-                      onPressed: () {
-                        if (isPlaying) {
-                          controller.reset();
-                        } else {
-                          controller.repeat();
-                        }
-                        setState(() {
-                          isPlaying = !isPlaying;
-                        });
-                      },
-                      iconSize: 50.0,
-                      icon: const Icon(Icons.pause_circle),
-                      color: Colors.white,
-                    )
+                    Container(
+                      height: size.height * 0.1,
+                      width: size.height * 0.05,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(
+                            'assets/svg/action-button.png',
+                          ),
+                        ),
+                      ),
+                      child: Icon(
+                        Icons.pause,
+                        size: size.height * 0.04,
+                        color: Colors.white,
+                      ),
+                    ),
                   ],
                 ),
               ),
-              Container(
-                decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage('assets/images/game_background.png'),
-                        fit: BoxFit.cover)),
-                width: size.width,
-                height: size.height * 0.75,
-                child: AspectRatio(
-                  aspectRatio: worldSize.aspectRatio,
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      Size unitSize = Size(
-                          constraints.maxWidth / worldSize.width,
-                          constraints.maxHeight / worldSize.height);
-                      List<Widget> gameObjects = [];
-                      gameObjects.add(paddle.render(controller, unitSize));
-                      gameObjects.addAll(
-                          balls.map((b) => b.render(controller, unitSize)));
-                      gameObjects
-                          .addAll(bricks.map((b) => b.drawShadow(unitSize)));
-                      gameObjects.addAll(
-                          bricks.map((b) => b.render(controller, unitSize)));
-                      gameObjects.addAll(
-                          powerups.map((b) => b.render(controller, unitSize)));
-                      return Stack(
-                        children: gameObjects,
-                      );
-                    },
+              Expanded(
+                child: SizedBox(
+                  width: size.width,
+                  child: AspectRatio(
+                    aspectRatio: worldSize.aspectRatio,
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        Size unitSize = Size(
+                            constraints.maxWidth / worldSize.width,
+                            constraints.maxHeight / worldSize.height);
+                        List<Widget> gameObjects = [];
+                        gameObjects.add(paddle.render(controller, unitSize));
+                        gameObjects.addAll(
+                            balls.map((b) => b.render(controller, unitSize)));
+                        gameObjects
+                            .addAll(bricks.map((b) => b.drawShadow(unitSize)));
+                        gameObjects.addAll(
+                            bricks.map((b) => b.render(controller, unitSize)));
+                        gameObjects.addAll(powerups
+                            .map((b) => b.render(controller, unitSize)));
+                        return Stack(
+                          children: gameObjects,
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),
               Row(
                 children: [
+                  Expanded(
+                    child: 'elevated-button'.playButtonWithTap(
+                      down: () => paddle.left = true,
+                      up: () => paddle.right = false,
+                    ),
+                  ),
                   Expanded(
                     child: Btn(
                         child: const Icon(Icons.arrow_left, size: 50),
@@ -326,8 +337,11 @@ class Btn extends StatelessWidget {
         child: Container(
           margin: const EdgeInsets.all(8),
           decoration: const BoxDecoration(
-              color: Colors.red,
-              borderRadius: BorderRadius.all(Radius.circular(16))),
+            color: Colors.red,
+            borderRadius: BorderRadius.all(
+              Radius.circular(16),
+            ),
+          ),
           child: Center(child: child),
         ));
   }

@@ -180,4 +180,16 @@ extension FilePaths on String {
       child: svgPicture,
     );
   }
+
+  GestureDetector playButtonWithTap({
+    required void Function() down,
+    required void Function() up,
+  }) {
+    return GestureDetector(
+      onTapDown: (details) => down(),
+      onTapCancel: up,
+      onTapUp: (details) => up(),
+      child: svgPicture,
+    );
+  }
 }

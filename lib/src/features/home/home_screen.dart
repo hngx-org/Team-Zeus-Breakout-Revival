@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:zeus_breakout_rivival/element/gameplayUI/game_play.dart';
 import 'package:zeus_breakout_rivival/src/features/home/widgets/home_appbard.dart';
 import 'package:zeus_breakout_rivival/src/features/home/widgets/widgets.dart';
 import 'package:zeus_breakout_rivival/utils/extension.dart';
@@ -197,9 +198,18 @@ class HomeScreen extends HookWidget {
                         ],
                       ),
                     ),
-                    'play'.imageWithTap(onTap: () {}).padOnly(
-                          bottom: 50,
-                        )
+                    'play'.imageWithTap(onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return const Breakout();
+                          },
+                        ),
+                      );
+                    }).padOnly(
+                      bottom: 50,
+                    )
                   ],
                 ).padSymmetric(
                   horizontal: 20,
