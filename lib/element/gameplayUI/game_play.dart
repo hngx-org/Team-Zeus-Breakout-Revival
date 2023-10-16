@@ -5,6 +5,7 @@ import 'package:zeus_breakout_rivival/element/ball/ball.dart';
 import 'package:zeus_breakout_rivival/element/brick/brick.dart';
 import 'package:zeus_breakout_rivival/element/paddle/paddle.dart';
 import 'package:zeus_breakout_rivival/element/powerUps/power_ups.dart';
+import 'package:zeus_breakout_rivival/src/features/gameover/game_status.dart';
 import 'package:zeus_breakout_rivival/utils/extension.dart';
 
 class Breakout extends StatefulWidget {
@@ -18,6 +19,8 @@ class _BreakoutState extends State<Breakout>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   bool isPlaying = true;
+  bool gameComplete = false;
+  bool gameFail = false;
 
   late Size worldSize;
   late Paddle paddle;
@@ -128,19 +131,62 @@ class _BreakoutState extends State<Breakout>
     }
 
     for (Ball ball in balls) {
+      // debugPrint("${ball.position.dy}");
+      // debugPrint("${worldSize.height}");
+      // print(MediaQuery.of(context).size.height);
+
       ball.position = ball.position + ball.direction * ball.speed * deltaS;
       if (ball.position.dx + ball.size.width > worldSize.width) {
         ball.position =
             Offset(worldSize.width - ball.size.width, ball.position.dy);
         ball.direction = Offset(-ball.direction.dx, ball.direction.dy);
+        debugPrint("collision happed here on the right");
       }
       if (ball.position.dx < 0) {
         ball.position = Offset(0, ball.position.dy);
         ball.direction = Offset(-ball.direction.dx, ball.direction.dy);
+        debugPrint("collision happed here on the left");
       }
       if (ball.position.dy < 0) {
         ball.position = Offset(ball.position.dx, 0);
         ball.direction = Offset(ball.direction.dx, -ball.direction.dy);
+        debugPrint("collision happed here on the top");
+      }
+
+      // if (ball.position.dy + ball.size.height > worldSize.height) {
+      //   // Ball reached the bottom of the screen
+      //   // You can add game over logic here or reset the ball, depending on your game.
+      //   if (balls.length >= 2) {
+      //     balls.remove(ball);
+      //   } else {
+      //     debugPrint("Ball reached the bottom");
+      //     setState(() {
+      //       gameFail = true;
+      //     });
+      //   }
+      // }
+
+      if (ball.position.dy + ball.size.height > worldSize.height) {
+        // Ball reached the bottom of the screen
+        print(balls.length);
+
+        // Create a list of balls to remove
+        List<Ball> ballsToRemove = balls.where((ball) {
+          return ball.position.dy + ball.size.height > worldSize.height;
+        }).toList();
+
+        // Remove the balls from the original list
+        for (Ball ball in ballsToRemove) {
+          balls.remove(ball);
+        }
+
+        // You can add game over logic here or reset the ball, depending on your game.
+        if (balls.isEmpty) {
+          debugPrint("Game Over");
+          setState(() {
+            gameFail = true;
+          });
+        }
       }
 
       Rect ballRect = ball.rect;
@@ -148,6 +194,8 @@ class _BreakoutState extends State<Breakout>
         Rect intersection = ballRect.intersect(paddleRect);
         if (intersection.height < intersection.width &&
             ball.position.dy < paddle.position.dy) {
+          // debugPrint("yes it is located here dke");
+
           // ball is hitting the face of the paddle
           ball.position =
               Offset(ball.position.dx, ball.position.dy - intersection.height);
@@ -169,13 +217,14 @@ class _BreakoutState extends State<Breakout>
         } else {
           ball.position = Offset(ball.position.dx, paddleRect.bottom);
           ball.direction = Offset(0, ball.direction.dy.abs());
+          // debugPrint("yes it is located here");
         }
       }
       //
       for (Brick brick in bricks) {
         Rect brickRect = brick.rect;
         if (brickRect.overlaps(ballRect)) {
-          score += 500;
+          score += 50;
           destroyedBricks.add(brick);
           Rect intersection = brickRect.intersect(ballRect);
           if (intersection.height > intersection.width) {
@@ -206,8 +255,16 @@ class _BreakoutState extends State<Breakout>
       });
     }
 
+    if (bricks.isEmpty) {
+      setState(() {
+        gameComplete = true;
+      });
+    }
+
     prevTimeMS = currTimeMS;
   }
+
+  bool isPaused = false;
 
   //Gameplay UI
   @override
@@ -216,103 +273,132 @@ class _BreakoutState extends State<Breakout>
     return Scaffold(
       backgroundColor: const Color(0xFF9C59FE),
       body: SafeArea(
-        child: Container(
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/svg/game-bg.jpeg'),
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: Column(
-            children: [
-              Container(
-                width: size.width,
-                padding: const EdgeInsets.all(16),
-                height: size.height * 0.1,
-                color: Colors.white.withAlpha(100),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    'back_btn'.imageWithTap(onTap: () {
-                      Navigator.pop(context);
-                    }),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+        child: Stack(
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/svg/game-bg.jpeg'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Column(
+                children: [
+                  Container(
+                    width: size.width,
+                    padding: const EdgeInsets.all(16),
+                    height: size.height * 0.1,
+                    color: Colors.white.withAlpha(100),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        'score: $score'.textLarge(),
-                      ],
-                    ),
-                    Container(
-                      height: size.height * 0.1,
-                      width: size.height * 0.05,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(
-                            'assets/svg/action-button.png',
+                        if (!isPaused)
+                          'pause_btn'.imageWithTap(onTap: () {
+                            print("object");
+                            setState(() {
+                              isPaused = true;
+                              controller.stop();
+                            });
+                          })
+                        else
+                          'play_btn'.imageWithTap(onTap: () {
+                            setState(() {
+                              isPaused = false;
+                              controller.forward();
+                            });
+                          }),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            'score: $score'.textLarge(),
+                          ],
+                        ),
+                        Container(
+                          height: size.height * 0.1,
+                          width: size.height * 0.05,
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage('assets/svg/action-button.png'),
+                            ),
+                          ),
+                          child: Icon(
+                            Icons.pause,
+                            size: size.height * 0.04,
+                            color: Colors.white,
                           ),
                         ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: SizedBox(
+                      width: size.width,
+                      child: AspectRatio(
+                        aspectRatio: worldSize.aspectRatio,
+                        child: LayoutBuilder(
+                          builder: (context, constraints) {
+                            Size unitSize = Size(
+                                constraints.maxWidth / worldSize.width,
+                                constraints.maxHeight / worldSize.height);
+                            List<Widget> gameObjects = [];
+                            gameObjects
+                                .add(paddle.render(controller, unitSize));
+                            gameObjects.addAll(balls
+                                .map((b) => b.render(controller, unitSize)));
+                            gameObjects.addAll(
+                                bricks.map((b) => b.drawShadow(unitSize)));
+                            gameObjects.addAll(bricks
+                                .map((b) => b.render(controller, unitSize)));
+                            gameObjects.addAll(powerups
+                                .map((b) => b.render(controller, unitSize)));
+                            return Stack(
+                              children: gameObjects,
+                            );
+                          },
+                        ),
                       ),
-                      child: Icon(
-                        Icons.pause,
-                        size: size.height * 0.04,
-                        color: Colors.white,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: 'elevated-button'.playButtonWithTap(
+                          down: () => paddle.left = true,
+                          up: () => paddle.right = false,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: SizedBox(
-                  width: size.width,
-                  child: AspectRatio(
-                    aspectRatio: worldSize.aspectRatio,
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        Size unitSize = Size(
-                            constraints.maxWidth / worldSize.width,
-                            constraints.maxHeight / worldSize.height);
-                        List<Widget> gameObjects = [];
-                        gameObjects.add(paddle.render(controller, unitSize));
-                        gameObjects.addAll(
-                            balls.map((b) => b.render(controller, unitSize)));
-                        gameObjects
-                            .addAll(bricks.map((b) => b.drawShadow(unitSize)));
-                        gameObjects.addAll(
-                            bricks.map((b) => b.render(controller, unitSize)));
-                        gameObjects.addAll(powerups
-                            .map((b) => b.render(controller, unitSize)));
-                        return Stack(
-                          children: gameObjects,
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: 'elevated-button'.playButtonWithTap(
-                      down: () => paddle.left = true,
-                      up: () => paddle.right = false,
-                    ),
-                  ),
-                  Expanded(
-                    child: Btn(
-                        child: const Icon(Icons.arrow_left, size: 50),
-                        down: () => paddle.left = true,
-                        up: () => paddle.left = false),
-                  ),
-                  Expanded(
-                    child: Btn(
-                        child: const Icon(Icons.arrow_right, size: 50),
-                        down: () => paddle.right = true,
-                        up: () => paddle.right = false),
+                      Expanded(
+                        child: Btn(
+                            child: const Icon(Icons.arrow_left, size: 50),
+                            down: () => paddle.left = true,
+                            up: () => paddle.left = false),
+                      ),
+                      Expanded(
+                        child: Btn(
+                            child: const Icon(Icons.arrow_right, size: 50),
+                            down: () => paddle.right = true,
+                            up: () => paddle.right = false),
+                      )
+                    ],
                   )
                 ],
-              )
-            ],
-          ),
+              ),
+            ),
+            gameComplete
+                ? GameStatus(
+                    gameComplete: gameComplete,
+                    gameFail: gameFail,
+                    score: score,
+                  )
+                : Container(),
+            gameFail
+                ? GameStatus(
+                    gameComplete: gameComplete,
+                    gameFail: gameFail,
+                    score: score,
+                  )
+                : Container(),
+          ],
         ),
       ),
     );
