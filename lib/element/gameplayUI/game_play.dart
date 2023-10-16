@@ -167,20 +167,16 @@ class _BreakoutState extends State<Breakout>
       // }
 
       if (ball.position.dy + ball.size.height > worldSize.height) {
-        // Ball reached the bottom of the screen
         print(balls.length);
 
-        // Create a list of balls to remove
         List<Ball> ballsToRemove = balls.where((ball) {
           return ball.position.dy + ball.size.height > worldSize.height;
         }).toList();
 
-        // Remove the balls from the original list
         for (Ball ball in ballsToRemove) {
           balls.remove(ball);
         }
 
-        // You can add game over logic here or reset the ball, depending on your game.
         if (balls.isEmpty) {
           debugPrint("Game Over");
           setState(() {
