@@ -1,18 +1,31 @@
 import 'package:flame_audio/flame_audio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:zeus_breakout_rivival/src/features/splashscreen/splash_screen.dart';
 import 'package:zeus_breakout_rivival/utils/color_scheme.dart';
+import 'package:zeus_breakout_rivival/utils/locator.dart';
 
-void main() {
-  runApp(const MainApp());
+Future<void> main() async {
+  await setUpLocator();
+  Animate.restartOnHotReload = true;
+  runApp(
+    const ProviderScope(child: MainApp()),
+  );
   FlameAudio.bgm.initialize();
+  FlameAudio.audioCache.loadAll([
+    "brick-play.mp3",
+    "click.mp3",
+  ]);
 
-  FlameAudio.audioCache
-      .loadAll(["AdhesiveWombat - Night Shade  NO COPYRIGHT 8-bit Music.mp3"]);
-
-  FlameAudio.bgm
-      .play('AdhesiveWombat - Night Shade  NO COPYRIGHT 8-bit Music.mp3');
+  if (FlameAudio.bgm.isPlaying) {
+    FlameAudio.bgm.stop().then(
+          (value) => FlameAudio.bgm.play('brick-play.mp3'),
+        );
+  } else {
+    FlameAudio.bgm.play('brick-play.mp3');
+  }
 }
 
 class MainApp extends StatelessWidget {
@@ -23,15 +36,18 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Breakout Rivival",
-      themeMode: ThemeMode.dark,
+
+      themeMode: ThemeMode.light,
       theme: ThemeData(
         colorScheme: lightColorScheme,
         useMaterial3: true,
+        fontFamily: 'Digitalt',
       ),
       darkTheme: ThemeData(
         colorScheme: darkColorScheme,
         textTheme: GoogleFonts.audiowideTextTheme(ThemeData.dark().textTheme),
         useMaterial3: true,
+        fontFamily: 'Digitalt',
       ),
       home: const SplashScreen(),
       // home: SafeArea(
