@@ -77,6 +77,8 @@ class _BreakoutState extends State<Breakout>
 
   //Logic
   void update() {
+    // ignore: unnecessary_brace_in_string_interps
+    debugPrint('balls: ${balls.length}');
     int currTimeMS = DateTime.now().millisecondsSinceEpoch;
     int deltaMS = currTimeMS - prevTimeMS;
     double deltaS = deltaMS / 1000.0;
@@ -175,7 +177,7 @@ class _BreakoutState extends State<Breakout>
       for (Brick brick in bricks) {
         Rect brickRect = brick.rect;
         if (brickRect.overlaps(ballRect)) {
-          score += 500;
+          score += 5;
           destroyedBricks.add(brick);
           Rect intersection = brickRect.intersect(ballRect);
           if (intersection.height > intersection.width) {
@@ -242,20 +244,32 @@ class _BreakoutState extends State<Breakout>
                         'score: $score'.textLarge(),
                       ],
                     ),
-                    Container(
-                      height: size.height * 0.1,
-                      width: size.height * 0.05,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          image: AssetImage(
-                            'assets/svg/action-button.png',
+                    GestureDetector(
+                      onTap: () {
+                        if (isPlaying) {
+                          controller.reset();
+                        } else {
+                          controller.repeat();
+                        }
+                        setState(() {
+                          isPlaying = !isPlaying;
+                        });
+                      },
+                      child: Container(
+                        height: size.height * 0.1,
+                        width: size.height * 0.05,
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(
+                              'assets/svg/action-button.png',
+                            ),
                           ),
                         ),
-                      ),
-                      child: Icon(
-                        Icons.pause,
-                        size: size.height * 0.04,
-                        color: Colors.white,
+                        child: Icon(
+                          Icons.pause,
+                          size: size.height * 0.04,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ],
@@ -292,23 +306,50 @@ class _BreakoutState extends State<Breakout>
               Row(
                 children: [
                   Expanded(
-                    child: 'elevated-button'.playButtonWithTap(
-                      down: () => paddle.left = true,
-                      up: () => paddle.right = false,
+                    child: GestureDetector(
+                      onTapDown: (details) => paddle.left = true,
+                      onTapCancel: () => paddle.left = false,
+                      onTapUp: (details) => paddle.left = false,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          'elevated-button'.svgPicture,
+                          const Positioned(
+                            child: Icon(Icons.arrow_left, size: 50),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                   Expanded(
-                    child: Btn(
-                        child: const Icon(Icons.arrow_left, size: 50),
-                        down: () => paddle.left = true,
-                        up: () => paddle.left = false),
+                    child: GestureDetector(
+                      onTapDown: (details) => paddle.right = true,
+                      onTapCancel: () => paddle.right = false,
+                      onTapUp: (details) => paddle.right = false,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          'elevated-button'.svgPicture,
+                          const Positioned(
+                            child: Icon(Icons.arrow_right, size: 50),
+                          )
+                        ],
+                      ),
+                    ),
                   ),
-                  Expanded(
-                    child: Btn(
-                        child: const Icon(Icons.arrow_right, size: 50),
-                        down: () => paddle.right = true,
-                        up: () => paddle.right = false),
-                  )
+                  16.hi,
+                  // Expanded(
+                  //   child: Btn(
+                  //       child: const Icon(Icons.arrow_left, size: 50),
+                  //       down: () => paddle.left = true,
+                  //       up: () => paddle.left = false),
+                  // ),
+                  // Expanded(
+                  //   child: Btn(
+                  //       child: const Icon(Icons.arrow_right, size: 50),
+                  //       down: () => paddle.right = true,
+                  //       up: () => paddle.right = false),
+                  // )
                 ],
               )
             ],
