@@ -61,8 +61,7 @@ class _SplashScreenState extends State<SplashScreen>
         width: double.infinity,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: const AssetImage(
-                "assets/images/ben-neale-zpxKdH_xNSI-unsplash.jpg"),
+            image: const AssetImage("assets/images/splash-screen.jpeg"),
             fit: BoxFit.cover,
             colorFilter: ColorFilter.mode(
               Colors.black.withOpacity(0.5),
@@ -80,9 +79,8 @@ class _SplashScreenState extends State<SplashScreen>
                   "BREAKOUT",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontFamily: "PressStart2P",
                     fontStyle: FontStyle.italic,
-                    color: Color.fromARGB(255, 0, 109, 218),
+                    color: Colors.white,
                     fontSize: 42,
                   ),
                 ),
@@ -94,9 +92,8 @@ class _SplashScreenState extends State<SplashScreen>
                   "REVIVAL",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontFamily: "PressStart2P",
                     fontStyle: FontStyle.italic,
-                    color: Color.fromARGB(255, 255, 0, 0),
+                    color: Colors.white,
                     fontSize: 42,
                   ),
                 ),

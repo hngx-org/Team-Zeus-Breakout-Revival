@@ -80,6 +80,8 @@ class _BreakoutState extends State<Breakout>
 
   //Logic
   void update() {
+    // ignore: unnecessary_brace_in_string_interps
+    debugPrint('balls: ${balls.length}');
     int currTimeMS = DateTime.now().millisecondsSinceEpoch;
     int deltaMS = currTimeMS - prevTimeMS;
     double deltaS = deltaMS / 1000.0;
@@ -220,7 +222,7 @@ class _BreakoutState extends State<Breakout>
       for (Brick brick in bricks) {
         Rect brickRect = brick.rect;
         if (brickRect.overlaps(ballRect)) {
-          score += 50;
+          score += 5;
           destroyedBricks.add(brick);
           Rect intersection = brickRect.intersect(ballRect);
           if (intersection.height > intersection.width) {

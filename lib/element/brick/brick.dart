@@ -5,7 +5,7 @@ class Brick extends GameObject {
   Color color;
 
   Brick({required Offset position, required this.color})
-      : super(position: position, size: Size(2, 1));
+      : super(position: position, size: const Size(2, 1));
 
   @override
   Widget renderGameObject(Size unitSize) {
@@ -14,17 +14,26 @@ class Brick extends GameObject {
 
   Widget drawShadow(Size unitSize) {
     return Positioned(
-        top: position.dy * unitSize.height,
-        left: position.dx * unitSize.width,
+      top: position.dy * unitSize.height,
+      left: position.dx * unitSize.width,
+      width: size.width * unitSize.width,
+      height: size.height * unitSize.height,
+      child: (Container(
         width: size.width * unitSize.width,
         height: size.height * unitSize.height,
-        child: (Container(
-            width: size.width * unitSize.width,
-            height: size.height * unitSize.height,
-            decoration: BoxDecoration(boxShadow: [
-              BoxShadow(
-                  color: Colors.black.withAlpha(100), offset: Offset(10, 10))
-            ]))));
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withAlpha(100),
+              offset: const Offset(
+                10,
+                10,
+              ),
+            )
+          ],
+        ),
+      )),
+    );
   }
 }
 
@@ -32,7 +41,6 @@ Paint stroke = Paint()
   ..strokeWidth = 1
   ..color = Colors.black
   ..style = PaintingStyle.stroke;
-
 
 class BrickPainter extends CustomPainter {
   final Color brickColor;
@@ -42,8 +50,8 @@ class BrickPainter extends CustomPainter {
 
   BrickPainter({required this.brickColor})
       : main = Paint()
-    ..color = brickColor
-    ..style = PaintingStyle.fill,
+          ..color = brickColor
+          ..style = PaintingStyle.fill,
         light = Paint()
           ..color = Color.lerp(brickColor, Colors.white, .1)!
           ..style = PaintingStyle.fill,

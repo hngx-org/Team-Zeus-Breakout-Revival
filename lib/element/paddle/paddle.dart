@@ -6,16 +6,16 @@ class Paddle extends GameObject {
   bool left = false;
   bool right = false;
 
-
   double desiredLength = 3.0;
 
-  Paddle({required Offset position}) : super(position: position, size: Size(3.0, .7));
+  Paddle({required Offset position})
+      : super(position: position, size: const Size(3.0, .7));
 
   @override
   Widget renderGameObject(Size unitSize) {
     return Container(
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(16)),
+            borderRadius: const BorderRadius.all(Radius.circular(16)),
             gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
@@ -27,7 +27,8 @@ class Paddle extends GameObject {
                 ]),
             boxShadow: [
               BoxShadow(
-                  color: Colors.black.withAlpha(100), offset: Offset(10, 10))
+                  color: Colors.black.withAlpha(100),
+                  offset: const Offset(10, 10))
             ]),
         child: Center(
           child: Container(
