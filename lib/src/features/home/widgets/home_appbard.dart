@@ -7,9 +7,11 @@ class HomeAppbar extends StatelessWidget {
   const HomeAppbar({
     super.key,
     required this.isSettingOn,
+    required this.displayLevels,
   });
 
   final ValueNotifier<bool> isSettingOn;
+  final ValueNotifier<bool> displayLevels;
 
   @override
   Widget build(BuildContext context) {
@@ -53,38 +55,41 @@ class HomeAppbar extends StatelessWidget {
                     ],
                   ),
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            decoration: ShapeDecoration(
-              color: const Color(0xFF9F51FE),
-              shape: RoundedRectangleBorder(
-                side: const BorderSide(
-                  width: 2,
-                  color: Colors.white,
+          InkWell(
+            onTap: () => displayLevels.value = !displayLevels.value,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              decoration: ShapeDecoration(
+                color: const Color(0xFF9F51FE),
+                shape: RoundedRectangleBorder(
+                  side: const BorderSide(
+                    width: 2,
+                    color: Colors.white,
+                  ),
+                  borderRadius: BorderRadius.circular(33),
                 ),
-                borderRadius: BorderRadius.circular(33),
+                shadows: const [
+                  BoxShadow(
+                    color: Color(0x26000000),
+                    blurRadius: 0,
+                    offset: Offset(0, 4),
+                    spreadRadius: 0,
+                  )
+                ],
               ),
-              shadows: const [
-                BoxShadow(
-                  color: Color(0x26000000),
-                  blurRadius: 0,
-                  offset: Offset(0, 4),
-                  spreadRadius: 0,
-                )
-              ],
-            ),
-            child: const Text(
-              'Level 01',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 25,
+              child: Text(
+                displayLevels.value ? "Close" : 'Level 01',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 25,
+                ),
               ),
             ),
           ),
           Row(
             children: [
               const Text(
-                '2499',
+                '0',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,
