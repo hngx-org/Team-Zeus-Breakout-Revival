@@ -8,15 +8,14 @@ import 'package:zeus_breakout_rivival/element/powerUps/power_ups.dart';
 import 'package:zeus_breakout_rivival/src/features/gameover/game_status.dart';
 import 'package:zeus_breakout_rivival/utils/extension.dart';
 
-class Breakout extends StatefulWidget {
-  const Breakout({Key? key}) : super(key: key);
+class Level2 extends StatefulWidget {
+  const Level2({Key? key}) : super(key: key);
 
   @override
-  State<Breakout> createState() => _BreakoutState();
+  State<Level2> createState() => _Level2State();
 }
 
-class _BreakoutState extends State<Breakout>
-    with SingleTickerProviderStateMixin {
+class _Level2State extends State<Level2> with SingleTickerProviderStateMixin {
   late AnimationController controller;
   bool isPlaying = true;
   bool gameComplete = false;
@@ -69,41 +68,9 @@ class _BreakoutState extends State<Breakout>
       Brick(position: const Offset(14, 4), color: Colors.amber)
     ];
 
-    powerups = [];
-
-    Future.delayed(const Duration(seconds: 5), () {
-      setState(() {
-        powerups.add(
-            PowerUp(position: const Offset(4.0, 7.0), type: PowerUpType.balls));
-      });
-    })
-        .then((value) => {
-              Future.delayed(const Duration(seconds: 10), () {
-                setState(() {
-                  powerups.add(PowerUp(
-                      position: const Offset(10.0, 3),
-                      type: PowerUpType.length));
-                });
-              })
-            })
-        .then((value) => {
-              Future.delayed(const Duration(seconds: 15), () {
-                setState(() {
-                  powerups.add(PowerUp(
-                      position: const Offset(2.0, 4.0),
-                      type: PowerUpType.balls));
-                });
-              })
-            })
-        .then((value) => {
-              Future.delayed(const Duration(seconds: 20), () {
-                setState(() {
-                  powerups.add(PowerUp(
-                      position: const Offset(4.0, 2.0),
-                      type: PowerUpType.speed));
-                });
-              })
-            });
+    powerups = [
+      PowerUp(position: const Offset(4.0, 7.0), type: PowerUpType.balls)
+    ];
 
     prevTimeMS = DateTime.now().millisecondsSinceEpoch;
 
@@ -459,11 +426,7 @@ class _BreakoutState extends State<Breakout>
                     gameFail: gameFail,
                     score: score,
                     onTap: () {
-                      setState(() {
-                        gameComplete = false;
-                        gameFail = false;
-                        score = 0;
-                      });
+                      resetGame(); // Call the resetGame method to restart the game
                     },
                   )
                 : Container(),
@@ -473,7 +436,11 @@ class _BreakoutState extends State<Breakout>
                     gameFail: gameFail,
                     score: score,
                     onTap: () {
-                      resetGame();
+                      setState(() {
+                        gameComplete = false;
+                        gameFail = false;
+                        score = 0;
+                      });
                     },
                   )
                 : Container(),
