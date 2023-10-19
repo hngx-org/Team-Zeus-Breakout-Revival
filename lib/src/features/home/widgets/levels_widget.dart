@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zeus_breakout_rivival/element/gameplayUI/game_play.dart';
 
 class LevelWidget extends StatelessWidget {
   final ValueNotifier<bool> displayLevels;
@@ -82,7 +83,18 @@ class LevelWidget extends StatelessWidget {
                     itemCount: 9,
                     itemBuilder: (context, index) {
                       return InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          if (index + 1 == 1) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return const Breakout();
+                                },
+                              ),
+                            );
+                          }
+                        },
                         child: Container(
                           width: 70,
                           height: 70,
