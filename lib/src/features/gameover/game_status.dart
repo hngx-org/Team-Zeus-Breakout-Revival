@@ -8,12 +8,14 @@ class GameStatus extends StatelessWidget {
   final bool gameComplete;
   final bool gameFail;
   final int score;
+  final VoidCallback onTap;
 
   const GameStatus(
       {super.key,
       required this.gameComplete,
       required this.gameFail,
-      required this.score});
+      required this.score,
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -212,12 +214,15 @@ class GameStatus extends StatelessWidget {
                               )
                             : const SizedBox(),
                         InkWell(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                          },
+                          onTap: onTap,
                           child: gameComplete
                               ? "ok_btn".svgPicture
-                              : 'continue'.svgPicture,
+                              : Column(
+                                  children: [
+                                    'redo_btn'.svgPicture,
+                                    'Retry'.textSmall()
+                                  ],
+                                ),
                         ),
                       ],
                     ),
