@@ -166,9 +166,18 @@ class LevelWidget extends StatelessWidget {
                                 const Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(Icons.star),
-                                    Icon(Icons.star),
-                                    Icon(Icons.star),
+                                    Icon(
+                                      Icons.star,
+                                      size: 20,
+                                    ),
+                                    Icon(
+                                      Icons.star,
+                                      size: 20,
+                                    ),
+                                    Icon(
+                                      Icons.star,
+                                      size: 20,
+                                    ),
                                   ],
                                 )
                               ],
