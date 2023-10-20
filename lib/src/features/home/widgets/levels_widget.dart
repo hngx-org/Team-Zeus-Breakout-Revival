@@ -57,7 +57,7 @@ class LevelWidget extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 38,
                             fontStyle: FontStyle.italic,
-                            color: Colors.black, // Border color
+                            color: Colors.black,
                           ),
                         ),
                       ),
@@ -66,7 +66,7 @@ class LevelWidget extends StatelessWidget {
                         style: TextStyle(
                           fontSize: 35,
                           fontStyle: FontStyle.italic,
-                          color: Colors.white, // Text color
+                          color: Colors.white,
                         ),
                       ),
                     ],
@@ -138,8 +138,7 @@ class LevelWidget extends StatelessWidget {
                                                 style: const TextStyle(
                                                   fontSize: 50,
                                                   fontStyle: FontStyle.italic,
-                                                  color: Colors
-                                                      .black, // Border color
+                                                  color: Colors.black,
                                                 ),
                                               )
                                             : const Icon(Icons.lock,
@@ -151,8 +150,7 @@ class LevelWidget extends StatelessWidget {
                                               style: const TextStyle(
                                                 fontSize: 35,
                                                 fontStyle: FontStyle.italic,
-                                                color:
-                                                    Colors.white, // Text color
+                                                color: Colors.white,
                                               ),
                                             )
                                           : const Icon(
