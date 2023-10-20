@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:zeus_breakout_rivival/game_info/info.dart';
 import 'package:zeus_breakout_rivival/src/features/splashscreen/splash_screen.dart';
+// import 'package:zeus_breakout_rivival/src/features/splashscreen/splash_screen.dart';
 
 void main() {
   runApp(const MainApp());
