@@ -265,16 +265,6 @@ class HomeScreen extends HookWidget {
                     },
                   ),
                   BottomNavigationIcon(
-                    text: 'hscore||lb||L-Board',
-                    onTap: () {
-                      FlameUtils.playBgmWithDelay(
-                        'click.mp3',
-                        volume: 0.2,
-                        delayMilliseconds: 300,
-                      );
-                    },
-                  ),
-                  BottomNavigationIcon(
                     text: 'bonu||bonus||Bonus',
                     onTap: () {
                       FlameUtils.playBgmWithDelay(
