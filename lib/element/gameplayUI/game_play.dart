@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:zeus_breakout_rivival/element/ball/ball.dart';
 import 'package:zeus_breakout_rivival/element/brick/brick.dart';
+import 'package:zeus_breakout_rivival/element/gameplayUI/Breakout_Controller.dart';
 import 'package:zeus_breakout_rivival/element/paddle/paddle.dart';
 import 'package:zeus_breakout_rivival/element/powerUps/power_ups.dart';
 import 'package:zeus_breakout_rivival/src/features/gameover/game_status.dart';
@@ -27,6 +28,8 @@ class _BreakoutState extends State<Breakout>
   late List<Ball> balls;
   late List<Brick> bricks;
   late List<PowerUp> powerups;
+  late List<BreakoutLevel> levels;
+  int stage = 0;
 
   int prevTimeMS = 0;
 
@@ -37,6 +40,248 @@ class _BreakoutState extends State<Breakout>
     // TODO: implement initState
     super.initState();
 
+    levels = [
+      BreakoutLevel(
+        bricks: [
+          Brick(position: const Offset(2, 2), color: Colors.green),
+          Brick(position: const Offset(4, 2), color: Colors.green),
+          Brick(position: const Offset(6, 2), color: Colors.green),
+          Brick(position: const Offset(10, 2), color: Colors.green),
+          Brick(position: const Offset(12, 2), color: Colors.green),
+          Brick(position: const Offset(14, 2), color: Colors.green),
+          Brick(position: const Offset(2, 3), color: Colors.red),
+          Brick(position: const Offset(4, 3), color: Colors.red),
+          Brick(position: const Offset(6, 3), color: Colors.red),
+          Brick(position: const Offset(10, 3), color: Colors.red),
+          Brick(position: const Offset(12, 3), color: Colors.red),
+          Brick(position: const Offset(14, 3), color: Colors.red),
+          Brick(position: const Offset(2, 4), color: Colors.amber),
+          Brick(position: const Offset(4, 4), color: Colors.amber),
+          Brick(position: const Offset(6, 4), color: Colors.amber),
+          Brick(position: const Offset(10, 4), color: Colors.amber),
+          Brick(position: const Offset(12, 4), color: Colors.amber),
+          Brick(position: const Offset(14, 4), color: Colors.amber)
+        ],
+        powerUps: [
+          PowerUp(position: const Offset(4.0, 7.0), type: PowerUpType.balls),
+          PowerUp(position: const Offset(10.0, 3), type: PowerUpType.length),
+          PowerUp(position: const Offset(2.0, 4.0), type: PowerUpType.balls),
+          PowerUp(position: const Offset(4.0, 2.0), type: PowerUpType.speed)
+        ],
+      ),
+      BreakoutLevel(
+        bricks: [
+          Brick(
+              position: const Offset(2, 2),
+              color: const Color(0xFF001219)), // Rich Black
+          Brick(
+              position: const Offset(4, 2),
+              color: const Color(0xFF005F73)), // Midnight Green
+          Brick(
+              position: const Offset(6, 2),
+              color: const Color(0xFF0A9396)), // Dark Cyan
+          Brick(
+              position: const Offset(8, 2),
+              color: const Color(0xFF94D2BD)), // Tiffany Blue
+          Brick(
+              position: const Offset(10, 2),
+              color: const Color(0xFFE9D8A6)), // Vanilla
+          Brick(
+              position: const Offset(12, 2),
+              color: const Color(0xFFEE9B00)), // Gamboge
+          Brick(
+              position: const Offset(14, 2),
+              color: const Color(0xFFCA6702)), // Alloy Orange
+          Brick(
+              position: const Offset(2, 3),
+              color: const Color(0xFFBB3E03)), // Rust
+          Brick(
+              position: const Offset(4, 3),
+              color: const Color(0xFFAE2012)), // Rufous
+          Brick(
+              position: const Offset(6, 3),
+              color: const Color(0xFF9B2226)), // Auburn
+          // Add more bricks
+          Brick(
+              position: const Offset(8, 3),
+              color: const Color(0xFF001219)), // Rich Black
+          Brick(
+              position: const Offset(10, 3),
+              color: const Color(0xFF005F73)), // Midnight Green
+          Brick(
+              position: const Offset(12, 3),
+              color: const Color(0xFF0A9396)), // Dark Cyan
+          Brick(
+              position: const Offset(14, 3),
+              color: const Color(0xFF94D2BD)), // Tiffany Blue
+          Brick(
+              position: const Offset(2, 4),
+              color: const Color(0xFFE9D8A6)), // Vanilla
+          Brick(
+              position: const Offset(4, 4),
+              color: const Color(0xFFEE9B00)), // Gamboge
+          Brick(
+              position: const Offset(6, 4),
+              color: const Color(0xFFCA6702)), // Alloy Orange
+          Brick(
+              position: const Offset(8, 4),
+              color: const Color(0xFFBB3E03)), // Rust
+          Brick(
+              position: const Offset(10, 4),
+              color: const Color(0xFFAE2012)), // Rufous
+          Brick(
+              position: const Offset(12, 4),
+              color: const Color(0xFF9B2226)), // Auburn
+          Brick(position: const Offset(14, 4), color: const Color(0xFF001219)),
+          // Add more bricks as needed
+        ],
+        powerUps: [
+          PowerUp(position: const Offset(10.0, 3), type: PowerUpType.length),
+          PowerUp(position: const Offset(2.0, 4.0), type: PowerUpType.balls),
+          PowerUp(position: const Offset(4.0, 2.0), type: PowerUpType.speed)
+        ],
+      ),
+      BreakoutLevel(
+        bricks: [
+          Brick(
+              position: const Offset(2, 2),
+              color: const Color(0xFF001219)), // Rich Black
+          Brick(
+              position: const Offset(4, 2),
+              color: const Color(0xFF005F73)), // Midnight Green
+          Brick(
+              position: const Offset(6, 2),
+              color: const Color(0xFF0A9396)), // Dark Cyan
+          Brick(
+              position: const Offset(10, 2),
+              color: const Color(0xFF94D2BD)), // Tiffany Blue
+          Brick(
+              position: const Offset(12, 2),
+              color: const Color(0xFFEE9B00)), // Gamboge
+          Brick(
+              position: const Offset(14, 2),
+              color: const Color(0xFFCA6702)), // Alloy Orange
+          Brick(
+              position: const Offset(2, 3),
+              color: const Color(0xFFBB3E03)), // Rust
+          Brick(
+              position: const Offset(4, 3),
+              color: const Color(0xFFAE2012)), // Rufous
+          Brick(
+              position: const Offset(6, 3),
+              color: const Color(0xFF9B2226)), // Auburn
+          Brick(
+              position: const Offset(10, 3),
+              color: const Color(0xFF005F73)), // Midnight Green
+          Brick(
+              position: const Offset(12, 3),
+              color: const Color(0xFF0A9396)), // Dark Cyan
+          Brick(
+              position: const Offset(14, 3),
+              color: const Color(0xFF94D2BD)), // Tiffany Blue
+          Brick(
+              position: const Offset(2, 4),
+              color: const Color(0xFFE9D8A6)), // Vanilla
+          Brick(
+              position: const Offset(4, 4),
+              color: const Color(0xFFEE9B00)), // Gamboge
+          Brick(
+              position: const Offset(6, 4),
+              color: const Color(0xFFCA6702)), // Alloy Orange
+          Brick(
+              position: const Offset(10, 4),
+              color: const Color(0xFFAE2012)), // Rufous
+          Brick(
+              position: const Offset(12, 4),
+              color: const Color(0xFF9B2226)), // Auburn
+          Brick(position: const Offset(14, 4), color: const Color(0xFF001219)),
+          // Add more bricks as needed
+        ],
+        powerUps: [
+          PowerUp(position: const Offset(2.0, 4.0), type: PowerUpType.balls),
+          PowerUp(position: const Offset(4.0, 2.0), type: PowerUpType.speed)
+        ],
+      ),
+      BreakoutLevel(
+        bricks: [
+          // Row 1
+          Brick(
+              position: const Offset(2, 2),
+              color: const Color(0xFF001219)), // Rich Black
+          Brick(
+              position: const Offset(4, 2),
+              color: const Color(0xFF005F73)), // Midnight Green
+          Brick(
+              position: const Offset(6, 2),
+              color: const Color(0xFF0A9396)), // Dark Cyan
+          Brick(
+              position: const Offset(8, 2),
+              color: const Color(0xFF94D2BD)), // Tiffany Blue
+          Brick(
+              position: const Offset(10, 2),
+              color: const Color(0xFFE9D8A6)), // Vanilla
+          Brick(
+              position: const Offset(12, 2),
+              color: const Color(0xFFEE9B00)), // Gamboge
+          Brick(
+              position: const Offset(14, 2),
+              color: const Color(0xFFCA6702)), // Alloy Orange
+
+          // Row 2
+          Brick(
+              position: const Offset(2, 3),
+              color: const Color(0xFFBB3E03)), // Rust
+          Brick(
+              position: const Offset(4, 3),
+              color: const Color(0xFFAE2012)), // Rufous
+          Brick(
+              position: const Offset(6, 3),
+              color: const Color(0xFF9B2226)), // Auburn
+          Brick(
+              position: const Offset(8, 3),
+              color: const Color(0xFF001219)), // Rich Black
+          Brick(
+              position: const Offset(10, 3),
+              color: const Color(0xFF005F73)), // Midnight Green
+          Brick(
+              position: const Offset(12, 3),
+              color: const Color(0xFF0A9396)), // Dark Cyan
+          Brick(
+              position: const Offset(14, 3),
+              color: const Color(0xFF94D2BD)), // Tiffany Blue
+
+          // Add more rows and columns with additional bricks
+          // Row 3
+          Brick(
+              position: const Offset(2, 4),
+              color: const Color(0xFFE9D8A6)), // Vanilla
+          Brick(
+              position: const Offset(4, 4),
+              color: const Color(0xFFEE9B00)), // Gamboge
+          Brick(
+              position: const Offset(6, 4),
+              color: const Color(0xFFCA6702)), // Alloy Orange
+          Brick(
+              position: const Offset(8, 4),
+              color: const Color(0xFFBB3E03)), // Rust
+          Brick(
+              position: const Offset(10, 4),
+              color: const Color(0xFFAE2012)), // Rufous
+          Brick(
+              position: const Offset(12, 4),
+              color: const Color(0xFF9B2226)), // Auburn
+          Brick(
+              position: const Offset(14, 4),
+              color: const Color(0xFF001219)), // Rich Black
+
+          // Add more rows and columns with additional bricks as needed
+        ],
+        powerUps: [
+          PowerUp(position: const Offset(4.0, 7.0), type: PowerUpType.balls),
+          // Add more power-ups if needed
+        ],
+      )
+    ];
     controller =
         AnimationController(vsync: this, duration: const Duration(days: 99));
     controller.addListener(update);
@@ -44,63 +289,38 @@ class _BreakoutState extends State<Breakout>
     paddle = Paddle(position: const Offset(9.0 - 3.0 / 2, 26.0));
     balls = [
       Ball(
-          position: const Offset(8.3, 18),
-          direction: Offset.fromDirection(-.9),
-          speed: 9),
+        position: const Offset(8.3, 18),
+        direction: Offset.fromDirection(-.9),
+        speed: 9,
+      ),
     ];
-    bricks = [
-      Brick(position: const Offset(2, 2), color: Colors.green),
-      Brick(position: const Offset(4, 2), color: Colors.green),
-      Brick(position: const Offset(6, 2), color: Colors.green),
-      Brick(position: const Offset(10, 2), color: Colors.green),
-      Brick(position: const Offset(12, 2), color: Colors.green),
-      Brick(position: const Offset(14, 2), color: Colors.green),
-      Brick(position: const Offset(2, 3), color: Colors.red),
-      Brick(position: const Offset(4, 3), color: Colors.red),
-      Brick(position: const Offset(6, 3), color: Colors.red),
-      Brick(position: const Offset(10, 3), color: Colors.red),
-      Brick(position: const Offset(12, 3), color: Colors.red),
-      Brick(position: const Offset(14, 3), color: Colors.red),
-      Brick(position: const Offset(2, 4), color: Colors.amber),
-      Brick(position: const Offset(4, 4), color: Colors.amber),
-      Brick(position: const Offset(6, 4), color: Colors.amber),
-      Brick(position: const Offset(10, 4), color: Colors.amber),
-      Brick(position: const Offset(12, 4), color: Colors.amber),
-      Brick(position: const Offset(14, 4), color: Colors.amber)
-    ];
+    bricks = levels[stage].bricks;
 
     powerups = [];
 
     Future.delayed(const Duration(seconds: 5), () {
       setState(() {
-        powerups.add(
-            PowerUp(position: const Offset(4.0, 7.0), type: PowerUpType.balls));
+        powerups.add(levels[stage].powerUps[0]);
       });
     })
         .then((value) => {
               Future.delayed(const Duration(seconds: 10), () {
                 setState(() {
-                  powerups.add(PowerUp(
-                      position: const Offset(10.0, 3),
-                      type: PowerUpType.length));
+                  powerups.add(levels[stage].powerUps[1]);
                 });
               })
             })
         .then((value) => {
               Future.delayed(const Duration(seconds: 15), () {
                 setState(() {
-                  powerups.add(PowerUp(
-                      position: const Offset(2.0, 4.0),
-                      type: PowerUpType.balls));
+                  powerups.add(levels[stage].powerUps[2]);
                 });
               })
             })
         .then((value) => {
               Future.delayed(const Duration(seconds: 20), () {
                 setState(() {
-                  powerups.add(PowerUp(
-                      position: const Offset(4.0, 2.0),
-                      type: PowerUpType.speed));
+                  powerups.add(levels[stage].powerUps[3]);
                 });
               })
             });
@@ -144,7 +364,6 @@ class _BreakoutState extends State<Breakout>
       Rect powerupRect = powerup.rect;
       if (paddleRect.overlaps(powerupRect)) {
         consumedPowerups.add(powerup);
-        score += 50;
         switch (powerup.type) {
           case PowerUpType.length:
             paddle.desiredLength += 1.0;
@@ -280,6 +499,250 @@ class _BreakoutState extends State<Breakout>
 
   void resetGame() {
     setState(() {
+      levels = [
+        BreakoutLevel(
+          bricks: [
+            Brick(position: const Offset(2, 2), color: Colors.green),
+            Brick(position: const Offset(4, 2), color: Colors.green),
+            Brick(position: const Offset(6, 2), color: Colors.green),
+            Brick(position: const Offset(10, 2), color: Colors.green),
+            Brick(position: const Offset(12, 2), color: Colors.green),
+            Brick(position: const Offset(14, 2), color: Colors.green),
+            Brick(position: const Offset(2, 3), color: Colors.red),
+            Brick(position: const Offset(4, 3), color: Colors.red),
+            Brick(position: const Offset(6, 3), color: Colors.red),
+            Brick(position: const Offset(10, 3), color: Colors.red),
+            Brick(position: const Offset(12, 3), color: Colors.red),
+            Brick(position: const Offset(14, 3), color: Colors.red),
+            Brick(position: const Offset(2, 4), color: Colors.amber),
+            Brick(position: const Offset(4, 4), color: Colors.amber),
+            Brick(position: const Offset(6, 4), color: Colors.amber),
+            Brick(position: const Offset(10, 4), color: Colors.amber),
+            Brick(position: const Offset(12, 4), color: Colors.amber),
+            Brick(position: const Offset(14, 4), color: Colors.amber)
+          ],
+          powerUps: [
+            PowerUp(position: const Offset(4.0, 7.0), type: PowerUpType.balls),
+            PowerUp(position: const Offset(10.0, 3), type: PowerUpType.length),
+            PowerUp(position: const Offset(2.0, 4.0), type: PowerUpType.balls),
+            PowerUp(position: const Offset(4.0, 2.0), type: PowerUpType.speed)
+          ],
+        ),
+        BreakoutLevel(
+          bricks: [
+            Brick(
+                position: const Offset(2, 2),
+                color: const Color(0xFF001219)), // Rich Black
+            Brick(
+                position: const Offset(4, 2),
+                color: const Color(0xFF005F73)), // Midnight Green
+            Brick(
+                position: const Offset(6, 2),
+                color: const Color(0xFF0A9396)), // Dark Cyan
+            Brick(
+                position: const Offset(8, 2),
+                color: const Color(0xFF94D2BD)), // Tiffany Blue
+            Brick(
+                position: const Offset(10, 2),
+                color: const Color(0xFFE9D8A6)), // Vanilla
+            Brick(
+                position: const Offset(12, 2),
+                color: const Color(0xFFEE9B00)), // Gamboge
+            Brick(
+                position: const Offset(14, 2),
+                color: const Color(0xFFCA6702)), // Alloy Orange
+            Brick(
+                position: const Offset(2, 3),
+                color: const Color(0xFFBB3E03)), // Rust
+            Brick(
+                position: const Offset(4, 3),
+                color: const Color(0xFFAE2012)), // Rufous
+            Brick(
+                position: const Offset(6, 3),
+                color: const Color(0xFF9B2226)), // Auburn
+            // Add more bricks
+            Brick(
+                position: const Offset(8, 3),
+                color: const Color(0xFF001219)), // Rich Black
+            Brick(
+                position: const Offset(10, 3),
+                color: const Color(0xFF005F73)), // Midnight Green
+            Brick(
+                position: const Offset(12, 3),
+                color: const Color(0xFF0A9396)), // Dark Cyan
+            Brick(
+                position: const Offset(14, 3),
+                color: const Color(0xFF94D2BD)), // Tiffany Blue
+            Brick(
+                position: const Offset(2, 4),
+                color: const Color(0xFFE9D8A6)), // Vanilla
+            Brick(
+                position: const Offset(4, 4),
+                color: const Color(0xFFEE9B00)), // Gamboge
+            Brick(
+                position: const Offset(6, 4),
+                color: const Color(0xFFCA6702)), // Alloy Orange
+            Brick(
+                position: const Offset(8, 4),
+                color: const Color(0xFFBB3E03)), // Rust
+            Brick(
+                position: const Offset(10, 4),
+                color: const Color(0xFFAE2012)), // Rufous
+            Brick(
+                position: const Offset(12, 4),
+                color: const Color(0xFF9B2226)), // Auburn
+            Brick(
+                position: const Offset(14, 4), color: const Color(0xFF001219)),
+            // Add more bricks as needed
+          ],
+          powerUps: [
+            PowerUp(position: const Offset(10.0, 3), type: PowerUpType.length),
+            PowerUp(position: const Offset(2.0, 4.0), type: PowerUpType.balls),
+            PowerUp(position: const Offset(4.0, 2.0), type: PowerUpType.speed)
+          ],
+        ),
+        BreakoutLevel(
+          bricks: [
+            Brick(
+                position: const Offset(2, 2),
+                color: const Color(0xFF001219)), // Rich Black
+            Brick(
+                position: const Offset(4, 2),
+                color: const Color(0xFF005F73)), // Midnight Green
+            Brick(
+                position: const Offset(6, 2),
+                color: const Color(0xFF0A9396)), // Dark Cyan
+            Brick(
+                position: const Offset(10, 2),
+                color: const Color(0xFF94D2BD)), // Tiffany Blue
+            Brick(
+                position: const Offset(12, 2),
+                color: const Color(0xFFEE9B00)), // Gamboge
+            Brick(
+                position: const Offset(14, 2),
+                color: const Color(0xFFCA6702)), // Alloy Orange
+            Brick(
+                position: const Offset(2, 3),
+                color: const Color(0xFFBB3E03)), // Rust
+            Brick(
+                position: const Offset(4, 3),
+                color: const Color(0xFFAE2012)), // Rufous
+            Brick(
+                position: const Offset(6, 3),
+                color: const Color(0xFF9B2226)), // Auburn
+            Brick(
+                position: const Offset(10, 3),
+                color: const Color(0xFF005F73)), // Midnight Green
+            Brick(
+                position: const Offset(12, 3),
+                color: const Color(0xFF0A9396)), // Dark Cyan
+            Brick(
+                position: const Offset(14, 3),
+                color: const Color(0xFF94D2BD)), // Tiffany Blue
+            Brick(
+                position: const Offset(2, 4),
+                color: const Color(0xFFE9D8A6)), // Vanilla
+            Brick(
+                position: const Offset(4, 4),
+                color: const Color(0xFFEE9B00)), // Gamboge
+            Brick(
+                position: const Offset(6, 4),
+                color: const Color(0xFFCA6702)), // Alloy Orange
+            Brick(
+                position: const Offset(10, 4),
+                color: const Color(0xFFAE2012)), // Rufous
+            Brick(
+                position: const Offset(12, 4),
+                color: const Color(0xFF9B2226)), // Auburn
+            Brick(
+                position: const Offset(14, 4), color: const Color(0xFF001219)),
+            // Add more bricks as needed
+          ],
+          powerUps: [
+            PowerUp(position: const Offset(2.0, 4.0), type: PowerUpType.balls),
+            PowerUp(position: const Offset(4.0, 2.0), type: PowerUpType.speed)
+          ],
+        ),
+        BreakoutLevel(
+          bricks: [
+            // Row 1
+            Brick(
+                position: const Offset(2, 2),
+                color: const Color(0xFF001219)), // Rich Black
+            Brick(
+                position: const Offset(4, 2),
+                color: const Color(0xFF005F73)), // Midnight Green
+            Brick(
+                position: const Offset(6, 2),
+                color: const Color(0xFF0A9396)), // Dark Cyan
+            Brick(
+                position: const Offset(8, 2),
+                color: const Color(0xFF94D2BD)), // Tiffany Blue
+            Brick(
+                position: const Offset(10, 2),
+                color: const Color(0xFFE9D8A6)), // Vanilla
+            Brick(
+                position: const Offset(12, 2),
+                color: const Color(0xFFEE9B00)), // Gamboge
+            Brick(
+                position: const Offset(14, 2),
+                color: const Color(0xFFCA6702)), // Alloy Orange
+
+            // Row 2
+            Brick(
+                position: const Offset(2, 3),
+                color: const Color(0xFFBB3E03)), // Rust
+            Brick(
+                position: const Offset(4, 3),
+                color: const Color(0xFFAE2012)), // Rufous
+            Brick(
+                position: const Offset(6, 3),
+                color: const Color(0xFF9B2226)), // Auburn
+            Brick(
+                position: const Offset(8, 3),
+                color: const Color(0xFF001219)), // Rich Black
+            Brick(
+                position: const Offset(10, 3),
+                color: const Color(0xFF005F73)), // Midnight Green
+            Brick(
+                position: const Offset(12, 3),
+                color: const Color(0xFF0A9396)), // Dark Cyan
+            Brick(
+                position: const Offset(14, 3),
+                color: const Color(0xFF94D2BD)), // Tiffany Blue
+
+            // Add more rows and columns with additional bricks
+            // Row 3
+            Brick(
+                position: const Offset(2, 4),
+                color: const Color(0xFFE9D8A6)), // Vanilla
+            Brick(
+                position: const Offset(4, 4),
+                color: const Color(0xFFEE9B00)), // Gamboge
+            Brick(
+                position: const Offset(6, 4),
+                color: const Color(0xFFCA6702)), // Alloy Orange
+            Brick(
+                position: const Offset(8, 4),
+                color: const Color(0xFFBB3E03)), // Rust
+            Brick(
+                position: const Offset(10, 4),
+                color: const Color(0xFFAE2012)), // Rufous
+            Brick(
+                position: const Offset(12, 4),
+                color: const Color(0xFF9B2226)), // Auburn
+            Brick(
+                position: const Offset(14, 4),
+                color: const Color(0xFF001219)), // Rich Black
+
+            // Add more rows and columns with additional bricks as needed
+          ],
+          powerUps: [
+            PowerUp(position: const Offset(4.0, 7.0), type: PowerUpType.balls),
+            // Add more power-ups if needed
+          ],
+        )
+      ];
       gameComplete = false;
       gameFail = false;
       score = 0;
@@ -292,29 +755,16 @@ class _BreakoutState extends State<Breakout>
           speed: 9,
         ),
       ];
-      bricks = [
-        Brick(position: const Offset(2, 2), color: Colors.green),
-        Brick(position: const Offset(4, 2), color: Colors.green),
-        Brick(position: const Offset(6, 2), color: Colors.green),
-        Brick(position: const Offset(10, 2), color: Colors.green),
-        Brick(position: const Offset(12, 2), color: Colors.green),
-        Brick(position: const Offset(14, 2), color: Colors.green),
-        Brick(position: const Offset(2, 3), color: Colors.red),
-        Brick(position: const Offset(4, 3), color: Colors.red),
-        Brick(position: const Offset(6, 3), color: Colors.red),
-        Brick(position: const Offset(10, 3), color: Colors.red),
-        Brick(position: const Offset(12, 3), color: Colors.red),
-        Brick(position: const Offset(14, 3), color: Colors.red),
-        Brick(position: const Offset(2, 4), color: Colors.amber),
-        Brick(position: const Offset(4, 4), color: Colors.amber),
-        Brick(position: const Offset(6, 4), color: Colors.amber),
-        Brick(position: const Offset(10, 4), color: Colors.amber),
-        Brick(position: const Offset(12, 4), color: Colors.amber),
-        Brick(position: const Offset(14, 4), color: Colors.amber)
-      ];
+      bricks = levels[stage].bricks;
     });
     controller.reset(); // Reset the AnimationController
     controller.forward(); // Start the game animation
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   //Gameplay UI
@@ -346,40 +796,35 @@ class _BreakoutState extends State<Breakout>
                         'back_btn'.imageWithTap(onTap: () {
                           Navigator.of(context).pop();
                         }),
-                        if (!isPaused)
-                          'pause_btn'.imageWithTap(onTap: () {
-                            print("object");
-                            setState(() {
-                              isPaused = true;
-                              controller.stop();
-                            });
-                          })
-                        else
-                          'play_btn'.imageWithTap(onTap: () {
-                            setState(() {
-                              isPaused = false;
-                              controller.forward();
-                            });
-                          }),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            'score: $score'.textLarge(),
-                            'redo_but'.imageWithTap(onTap: () {})
-                          ],
-                        ),
-                        Container(
-                          height: size.height * 0.1,
-                          width: size.height * 0.05,
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('assets/svg/action-button.png'),
+                        'score: $score'.textLarge(),
+                        GestureDetector(
+                          onTap: () {
+                            !isPaused
+                                ? setState(() {
+                                    isPaused = true;
+                                    controller.stop();
+                                    update();
+                                  })
+                                : setState(() {
+                                    isPaused = false;
+                                    controller.forward();
+                                    update();
+                                  });
+                          },
+                          child: Container(
+                            height: size.height * 0.1,
+                            width: size.height * 0.05,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                image:
+                                    AssetImage('assets/svg/action-button.png'),
+                              ),
                             ),
-                          ),
-                          child: Icon(
-                            Icons.pause,
-                            size: size.height * 0.04,
-                            color: Colors.white,
+                            child: Icon(
+                              !isPaused ? Icons.play_arrow : Icons.pause,
+                              size: size.height * 0.04,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ],
@@ -460,6 +905,7 @@ class _BreakoutState extends State<Breakout>
                     score: score,
                     onTap: () {
                       setState(() {
+                        stage = stage + 1;
                         gameComplete = false;
                         gameFail = false;
                         score = 0;
